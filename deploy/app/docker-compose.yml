@@ -1,0 +1,28 @@
+version: "3"
+services:
+  ug-proposal-review-ms:
+    container_name: ug-proposal-review-ms
+    image: ug-proposal-review-ms:1.0.0
+    build: .
+    user: usrapp
+    ports:
+      - '3000:3000'
+    environment:
+      DB_PROVIDER: "postgresql"
+      DB_USR: userdba
+      DB_PWD: Passw0rd
+      DB_NAME: test-db
+      DB_SCHEMA: public
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_SEED: true
+      FILES_PATH: /home/usrapl/app/files
+    volumes:
+      - type: bind
+        source: ./files
+        target: /home/usrapl/app/files
+    networks:
+      - sandbox
+networks:
+  sandbox:
+    external: true

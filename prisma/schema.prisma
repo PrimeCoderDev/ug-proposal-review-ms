@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,174 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum TypePerson {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum StatusApplication {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RoleComission {
+  REVIEWER
+  COORDINATOR
+}
+
+model role {
+  id         String   @id
+  name       String
+  status     Status
+  create_at  DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
+  user       user[]
+  menu       menu[]
+}
+
+model person {
+  id               String             @id
+  document         String             @unique
+  name             String
+  career           String
+  faculty          String
+  email            String
+  address          String
+  phone_number     String
+  telephone_number String
+  type             TypePerson
+  status           Status
+  create_at        DateTime           @default(now()) @db.Timestamptz
+  updated_at       DateTime           @updatedAt @db.Timestamptz
+  user             user[]
+  proposal_detail  proposal_detail[]
+  comission_detail comission_detail[]
+}
+
+model user {
+  id         String   @id
+  person     person   @relation(fields: [id_person], references: [id])
+  id_person  String
+  role       role     @relation(fields: [id_role], references: [id])
+  id_role    String
+  username   String
+  password   String
+  status     Status
+  create_at  DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
+}
+
+model menu {
+  id         String    @id
+  role       role      @relation(fields: [id_role], references: [id])
+  id_role    String
+  name       String
+  icon       String
+  status     Status
+  create_at  DateTime  @default(now()) @db.Timestamptz
+  updated_at DateTime  @updatedAt @db.Timestamptz
+  submenu    submenu[]
+}
+
+model submenu {
+  id         String   @id
+  menu       menu     @relation(fields: [id_menu], references: [id])
+  id_menu    String
+  name       String
+  icon       String
+  path       String
+  status     Status
+  create_at  DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
+}
+
+model period {
+  id               String             @id
+  start_date       String
+  end_date         String
+  available_load   Boolean
+  description      String
+  status           Status
+  create_at        DateTime           @default(now()) @db.Timestamptz
+  updated_at       DateTime           @updatedAt @db.Timestamptz
+  proposal_header  proposal_header[]
+  comission_header comission_header[]
+}
+
+model proposal_header {
+  id                   String            @id
+  period               period            @relation(fields: [id_period], references: [id])
+  id_period            String
+  title                String?
+  title_obtain         String?
+  modality             String?
+  research_line        String?
+  research_subline     String?
+  option               String
+  category             String
+  statusApplication    StatusApplication
+  practicesValidities  String
+  viculationValidities String
+  status               Status
+  create_at            DateTime          @default(now()) @db.Timestamptz
+  updated_at           DateTime          @updatedAt @db.Timestamptz
+  proposal_detail      proposal_detail[]
+  review               review[]
+}
+
+model proposal_detail {
+  id          String          @id
+  proposal    proposal_header @relation(fields: [id_proposal], references: [id])
+  id_proposal String
+  person      person          @relation(fields: [id_person], references: [id])
+  id_person   String
+  principal   Boolean
+  status      Status
+  create_at   DateTime        @default(now()) @db.Timestamptz
+  updated_at  DateTime        @updatedAt @db.Timestamptz
+}
+
+model comission_header {
+  id               String             @id
+  period           period             @relation(fields: [id_period], references: [id])
+  id_period        String
+  description      String
+  status           Status
+  create_at        DateTime           @default(now()) @db.Timestamptz
+  updated_at       DateTime           @updatedAt @db.Timestamptz
+  comission_detail comission_detail[]
+}
+
+model comission_detail {
+  id             String           @id
+  comission      comission_header @relation(fields: [id_comission], references: [id])
+  id_comission   String
+  person         person           @relation(fields: [id_person], references: [id])
+  id_person      String
+  role_comission RoleComission
+  status         Status
+  create_at      DateTime         @default(now()) @db.Timestamptz
+  updated_at     DateTime         @updatedAt @db.Timestamptz
+  review         review[]
+}
+
+model review {
+  id                 String           @id
+  comission          comission_detail @relation(fields: [id_comision_member], references: [id])
+  id_comision_member String
+  proposal           proposal_header  @relation(fields: [id_proposal], references: [id])
+  id_proposal        String
+  comment            String
+  status             Status
+  create_at          DateTime         @default(now()) @db.Timestamptz
+  updated_at         DateTime         @updatedAt @db.Timestamptz
 }

@@ -19,10 +19,10 @@
       "@/shared/*": ["src/contexts/shared/*"],
       "@/tests/*": ["tests/*"]
     },
-    "target": "esnext"
+    "target": "ES2021"
   },
   "module": {
-    "type": "es6",
+    "type": "commonjs",
     "resolveFully": true
   },
   "minify": false

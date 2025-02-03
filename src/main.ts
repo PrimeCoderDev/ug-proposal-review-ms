@@ -21,6 +21,7 @@ async function bootstrap() {
   app.use(compression());
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.enableCors();
 
   const configService = app.get(ConfigService);
   const port = configService.get<string>('PORT', '3000');

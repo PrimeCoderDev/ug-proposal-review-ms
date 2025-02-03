@@ -2,9 +2,9 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "esnext",
-    "target": "esnext",
-    "moduleResolution": "Bundler",
+    "module": "commonjs",
+    "target": "ES2021",
+    //"moduleResolution": "Bundler",
     "esModuleInterop": true,
     "strict": true,
     "outDir": "dist",
@@ -13,13 +13,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
-      "@/src/*": ["src/*"],
-      "@/app/*": ["src/app/*"],
-      "@/contexts/*": ["src/contexts/*"],
-      "@/shared/*": ["src/contexts/shared/*"]
+      "@/*": ["src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
