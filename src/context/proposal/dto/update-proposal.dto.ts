@@ -1,5 +1,4 @@
 import { IsString, IsUUID } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class UpdateProposalDto {
   @IsString()

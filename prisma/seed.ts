@@ -403,7 +403,7 @@ const submenu = async () => {
         id_menu: reviewerMenuId?.id ?? '',
         name: 'Revision Propuestas',
         icon: 'ti ti-clipboard-search',
-        path: '/coordination/assignment-proposals',
+        path: '/reviewer/review-proposals',
         status: 'ACTIVE',
       },
       {

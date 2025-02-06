@@ -32,6 +32,42 @@ export class MenuService {
 
       let menus: any = [];
 
+      if (user?.role.name === 'TEACHER') {
+        const comission = await this.prisma.comission_detail.findFirst({
+          where: {
+            id_person: user.id_person,
+            status: 'ACTIVE',
+            comission: { status: 'ACTIVE' },
+          },
+          select: { role_comission: true },
+        });
+
+        if (comission) {
+          const role = await this.prisma.role.findFirst({
+            where: { name: comission.role_comission },
+            include: { menu: true },
+          });
+
+          if (role?.menu) {
+            for (const item of role.menu) {
+              const submenus = await this.prisma.submenu.findMany({
+                where: { id_menu: item.id },
+                select: { name: true, path: true, icon: true },
+              });
+
+              if (submenus) {
+                menus.push({
+                  name: item.name,
+                  expanded: false,
+                  icon: item.icon,
+                  children: submenus,
+                });
+              }
+            }
+          }
+        }
+      }
+
       if (user?.role.menu) {
         for (const item of user.role.menu) {
           const submenus = await this.prisma.submenu.findMany({

@@ -5,6 +5,8 @@ import { AuthModule } from '@/context/auth/auth.module';
 import { MenuModule } from '@/context/menu/menu.module';
 import { PeriodModule } from '@/context/period/period.module';
 import { ProposalModule } from '@/context/proposal/proposal.module';
+import { ComissionModule } from '@/context/comission/comission.module';
+import { ReviewModule } from '@/context/review/review.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { ProposalModule } from '@/context/proposal/proposal.module';
     MenuModule,
     PeriodModule,
     ProposalModule,
+    ComissionModule,
+    ReviewModule,
   ],
 })
 export class AppModule {}

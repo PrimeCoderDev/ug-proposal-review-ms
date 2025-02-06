@@ -1,4 +1,3 @@
-import { proposal_header } from './../../../node_modules/.prisma/client/index.d';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@/context/shared/providers/prisma.service';
